@@ -11,6 +11,9 @@ A [Quickshell](https://quickshell.outfoxxed.me/) bar widget for [Omarchy](https:
 - Works with multiple mounted drives
 - Keyboard and mouse navigation
 
+<img width="1278" height="901" alt="screenshot-2026-09-08_11-52-09" src="https://github.com/user-attachments/assets/52ae8ccd-8731-4d38-ab94-260618accb04" />
+
+
 ## Install
 
 ### Via Omarchy CLI (recommended)
