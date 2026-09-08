@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "omaimporter",
+  "name": "Omaimporter",
+  "version": "1.0.0",
+  "author": "mark",
+  "license": "MIT",
+  "description": "Preview files on an SD card and copy the ones you pick to a folder you choose. JPEG and camera RAW files show as thumbnails; files can optionally be renamed sequentially as they copy. Metadata is preserved because the source files are only ever copied, never moved or modified.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Importer.qml"
+  },
+  "barWidget": {
+    "displayName": "Omaimporter",
+    "description": "Preview files on an SD card as thumbnails and copy your selection to a destination folder.",
+    "category": "Utilities",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
