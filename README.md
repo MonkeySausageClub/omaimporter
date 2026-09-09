@@ -1,4 +1,4 @@
-#[Plugin.Omaimporter] 
+[Plugin.Omaimporter] 
 
 A [Quickshell](https://quickshell.outfoxxed.me/) bar widget for [Omarchy](https://github.com/omacom/omarchy) that previews files on a mounted SD card or drive and copies a user selection into a destination folder.
 
