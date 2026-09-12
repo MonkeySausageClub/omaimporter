@@ -9,7 +9,8 @@
 # If a non-empty <prefix-name> is given, files are renamed sequentially as
 #   <prefix-name>_001.<ext>, <prefix-name>_002.<ext>, ...
 # in the order they appear on the command line, keeping the original file
-# extension. Otherwise the original basename is preserved.
+# extension. Otherwise the original basename is preserved. Any '/' characters
+# in the prefix are stripped so it can never escape <dest-dir>.
 #
 # Emits one line per copied file to stdout: "copied<TAB><dest-path>".
 # On failure, emits "error<TAB><src><TAB><message>" and exits non-zero after
@@ -22,6 +23,9 @@ prefix=${1:-}; shift || true
 
 [ -n "$dest" ] || { echo "no destination given" >&2; exit 1; }
 mkdir -p "$dest" || { echo "cannot create destination: $dest" >&2; exit 1; }
+
+# A prefix must never contain a '/' — that would let it escape <dest-dir>.
+prefix=${prefix//\//}
 
 failed=0
 seq=0
@@ -55,7 +59,10 @@ for src in "$@"; do
     fi
   fi
 
-  if cp -p -- "$src" "$target" 2>/dev/null; then
+  # --no-clobber guards against a file appearing between the -e checks above
+  # and the copy; --preserve keeps timestamps, mode, ownership (where
+  # possible) and extended attributes.
+  if cp --preserve=mode,ownership,timestamps,xattr --no-clobber -- "$src" "$target" 2>/dev/null; then
     printf 'copied\t%s\n' "$target"
   else
     printf 'error\t%s\t%s\n' "$src" "copy failed"

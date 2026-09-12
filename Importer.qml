@@ -17,6 +17,7 @@ Panel {
   property string status: ""
   property string statusMessage: ""
   property bool picking: false
+  property int scanToken: 0
 
   readonly property color fg: bar ? bar.barForeground : Color.foreground
   readonly property color dim: Util.alpha(fg, 0.62)
@@ -144,9 +145,13 @@ Panel {
   }
 
   function scanDir(p) {
+    if (!p) return
+    if (scanProc.running) scanProc.running = false
+    scanToken++
     status = "scanning"
     statusMessage = ""
     entriesModel.clear()
+    scanProc.scanToken = scanToken
     scanProc.command = [scriptPath("list-images.sh"), p]
     scanProc.running = true
   }
@@ -269,12 +274,15 @@ Panel {
 
   Process {
     id: scanProc
+    property int scanToken: 0
     stdout: SplitParser {
       onRead: function(line) {
+        if (scanProc.scanToken !== root.scanToken) return
         root.addScanRow(String(line))
       }
     }
     onExited: {
+      if (scanProc.scanToken !== root.scanToken) return
       if (root.status === "scanning") {
         root.status = entriesModel.count === 0 ? "error" : ""
         root.statusMessage = entriesModel.count === 0 ? "No supported image files here" : ""
